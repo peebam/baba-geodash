@@ -1,0 +1,36 @@
+# Godot 4+ specific ignores
+.godot/
+/android/
+
+# Godot-specific files
+.import/
+*.godot-import
+
+# Exported builds
+/bin/
+
+# Cache and temporary files
+*.tmp
+*.log
+
+# Mono-specific (C# projects)
+.mono/
+*.csproj
+*.sln
+*.pidb
+*.mono
+
+# Godot editor settings (user-specific)
+*.cfg
+*.config
+*.ini
+*.converted.res
+
+# System-specific files
+.DS_Store
+Thumbs.db
+
+# User settings and sessions
+.editor_settings-*.json
+sessions/
+
