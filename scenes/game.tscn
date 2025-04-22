@@ -1,9 +1,8 @@
-[gd_scene load_steps=21 format=4 uid="uid://cs7iaa2tt31x6"]
+[gd_scene load_steps=10 format=4 uid="uid://cs7iaa2tt31x6"]
 
 [ext_resource type="Script" uid="uid://dutnny0mlun54" path="res://scenes/game.gd" id="1_lbhrr"]
 [ext_resource type="TileSet" uid="uid://bt5xnjeskwdny" path="res://resources/tileset.tres" id="1_uwrxv"]
-[ext_resource type="Script" uid="uid://8e0e4sm4rbjv" path="res://scenes/player.gd" id="2_lnu2h"]
-[ext_resource type="Texture2D" uid="uid://dwt2flp4vq8k2" path="res://icon.svg" id="2_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://c21bw3dk7qblh" path="res://scenes/player.tscn" id="4_iywne"]
 [ext_resource type="Script" uid="uid://ij2le2shc3l2" path="res://scenes/camera.gd" id="5_iywne"]
 [ext_resource type="Shader" uid="uid://8skbeo6dnxma" path="res://scenes/sky.gdshader" id="6_p57ef"]
 
@@ -12,100 +11,6 @@ shader = ExtResource("6_p57ef")
 shader_parameter/color_start = Color(0, 0, 0.321569, 1)
 shader_parameter/color_end = Color(0.983802, 0.495624, 0.485916, 1)
 shader_parameter/nb_steps = 10
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lbhrr"]
-size = Vector2(16, 16)
-
-[sub_resource type="Animation" id="Animation_iywne"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath(".:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [0.0]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector2(0, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_lbhrr"]
-resource_name = "die"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Sprite:rotation")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 1),
-"transitions": PackedFloat32Array(2.63901, 1),
-"update": 0,
-"values": [0.0, 12.5664]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("Sprite:position")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0, 0.4, 1),
-"transitions": PackedFloat32Array(0.5, 4.28709, 1),
-"update": 0,
-"values": [Vector2(0, 0), Vector2(0, -47), Vector2(0, 119)]
-}
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_iywne"]
-_data = {
-&"RESET": SubResource("Animation_iywne"),
-&"die": SubResource("Animation_lbhrr")
-}
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lnu2h"]
-size = Vector2(16, 16)
-
-[sub_resource type="Curve" id="Curve_iywne"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.578062, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
-point_count = 3
-
-[sub_resource type="CurveTexture" id="CurveTexture_lbhrr"]
-curve = SubResource("Curve_iywne")
-
-[sub_resource type="Curve" id="Curve_lbhrr"]
-_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
-point_count = 2
-
-[sub_resource type="CurveTexture" id="CurveTexture_iywne"]
-curve = SubResource("Curve_lbhrr")
-
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_lbhrr"]
-particle_flag_disable_z = true
-emission_shape_offset = Vector3(0, -2, 0)
-emission_shape_scale = Vector3(2, 2, 0)
-emission_shape = 1
-emission_sphere_radius = 1.0
-gravity = Vector3(0, -6, 0)
-scale_max = 5.0
-scale_curve = SubResource("CurveTexture_iywne")
-alpha_curve = SubResource("CurveTexture_lbhrr")
-hue_variation_min = 0.77
-hue_variation_max = 0.83
-turbulence_noise_strength = 0.0
 
 [sub_resource type="Animation" id="Animation_u5sy4"]
 length = 0.001
@@ -190,41 +95,14 @@ tile_set = ExtResource("1_uwrxv")
 [node name="Start" type="Node2D" parent="TileMapLayer"]
 position = Vector2(-33, 295)
 
-[node name="Player" type="CharacterBody2D" parent="."]
+[node name="Player" parent="." instance=ExtResource("4_iywne")]
 position = Vector2(-27, 251)
-script = ExtResource("2_lnu2h")
-metadata/_edit_group_ = true
-
-[node name="PikeDetector" type="Area2D" parent="Player"]
-collision_layer = 0
-collision_mask = 4
-
-[node name="CollisionShape" type="CollisionShape2D" parent="Player/PikeDetector"]
-shape = SubResource("RectangleShape2D_lbhrr")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Player"]
-libraries = {
-&"": SubResource("AnimationLibrary_iywne")
-}
-
-[node name="CollisionShape" type="CollisionShape2D" parent="Player"]
-shape = SubResource("RectangleShape2D_lnu2h")
-
-[node name="Sprite" type="Sprite2D" parent="Player"]
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("2_yqjtg")
-metadata/_edit_group_ = true
-
-[node name="GPUParticles2D" type="GPUParticles2D" parent="Player"]
-position = Vector2(-8, 8)
-amount = 40
-process_material = SubResource("ParticleProcessMaterial_lbhrr")
 
 [node name="Camera" type="Camera2D" parent="." node_paths=PackedStringArray("tracked")]
 anchor_mode = 0
 drag_horizontal_enabled = true
 script = ExtResource("5_iywne")
-tracked = NodePath("../Player")
+tracked = NodePath("")
 x_limit = 100
 
 [node name="ForegroundLayer" type="CanvasLayer" parent="."]
@@ -252,7 +130,4 @@ libraries = {
 &"": SubResource("AnimationLibrary_gee14")
 }
 
-[connection signal="dead" from="Player" to="." method="_on_player_dead"]
-[connection signal="body_entered" from="Player/PikeDetector" to="Player" method="_on_pike_detector_body_entered"]
-[connection signal="animation_finished" from="Player/AnimationPlayer" to="Player" method="_on_animation_player_animation_finished"]
 [connection signal="animation_finished" from="ForegroundLayer/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
