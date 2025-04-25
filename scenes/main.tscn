@@ -1,0 +1,161 @@
+[gd_scene load_steps=5 format=3 uid="uid://duy2oa3nuc8s8"]
+
+[ext_resource type="Script" uid="uid://bj3by2efiloem" path="res://scenes/main.gd" id="1_nek0u"]
+[ext_resource type="PackedScene" uid="uid://cs7iaa2tt31x6" path="res://scenes/game.tscn" id="2_h3o1x"]
+[ext_resource type="PackedScene" uid="uid://xfg2o8ju51ck" path="res://scenes/controllers/learner_controller.tscn" id="3_ae3m4"]
+[ext_resource type="Texture2D" uid="uid://dwt2flp4vq8k2" path="res://icon.svg" id="4_chbmb"]
+
+[node name="Main" type="Node2D"]
+script = ExtResource("1_nek0u")
+
+[node name="LearnerController" parent="." node_paths=PackedStringArray("game") instance=ExtResource("3_ae3m4")]
+game = NodePath("../Game")
+
+[node name="Game" parent="." instance=ExtResource("2_h3o1x")]
+
+[node name="Ui" type="CanvasLayer" parent="."]
+
+[node name="CurrentDetector" type="Node2D" parent="Ui"]
+position = Vector2(320, 64)
+
+[node name="Dislpay" type="Node2D" parent="Ui/CurrentDetector"]
+
+[node name="Sprite" type="Sprite2D" parent="Ui/CurrentDetector/Dislpay"]
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("4_chbmb")
+
+[node name="ActionsContainer" type="MarginContainer" parent="Ui"]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 112.0
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Actions" type="VBoxContainer" parent="Ui/ActionsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="TimeScale" type="VBoxContainer" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Ui/ActionsContainer/Actions/TimeScale"]
+layout_mode = 2
+text = "Time scale"
+
+[node name="SpinBox" type="SpinBox" parent="Ui/ActionsContainer/Actions/TimeScale"]
+layout_mode = 2
+min_value = 0.1
+step = 0.1
+value = 20.0
+
+[node name="Seed" type="VBoxContainer" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Ui/ActionsContainer/Actions/Seed"]
+layout_mode = 2
+text = "Seed"
+
+[node name="SpinBox" type="SpinBox" parent="Ui/ActionsContainer/Actions/Seed"]
+layout_mode = 2
+min_value = 1.0
+max_value = 2e+06
+value = 1.0
+
+[node name="TryPerGen" type="VBoxContainer" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Ui/ActionsContainer/Actions/TryPerGen"]
+layout_mode = 2
+text = "Tries / gen"
+
+[node name="SpinBox" type="SpinBox" parent="Ui/ActionsContainer/Actions/TryPerGen"]
+layout_mode = 2
+min_value = 10.0
+max_value = 1000.0
+value = 500.0
+
+[node name="BestTriesKept" type="VBoxContainer" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Ui/ActionsContainer/Actions/BestTriesKept"]
+layout_mode = 2
+text = "Best tries kept"
+
+[node name="SpinBox" type="SpinBox" parent="Ui/ActionsContainer/Actions/BestTriesKept"]
+layout_mode = 2
+min_value = 1.0
+max_value = 20.0
+value = 3.0
+
+[node name="Start" type="Button" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+text = "Start"
+
+[node name="Reset" type="Button" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+disabled = true
+text = "Reset"
+
+[node name="Quit" type="Button" parent="Ui/ActionsContainer/Actions"]
+layout_mode = 2
+text = "Quit"
+
+[node name="StatsContainer" type="MarginContainer" parent="Ui"]
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -128.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="Stats" type="VBoxContainer" parent="Ui/StatsContainer"]
+layout_mode = 2
+
+[node name="Distance" type="Label" parent="Ui/StatsContainer/Stats"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Distance"
+
+[node name="CurrentGeneration" type="Label" parent="Ui/StatsContainer/Stats"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Generation #"
+
+[node name="CurrentTry" type="Label" parent="Ui/StatsContainer/Stats"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Try #"
+
+[node name="BestTries" type="Label" parent="Ui/StatsContainer/Stats"]
+layout_mode = 2
+text = "Best tries"
+uppercase = true
+
+[node name="Scroll" type="ScrollContainer" parent="Ui/StatsContainer/Stats"]
+layout_mode = 2
+size_flags_vertical = 3
+horizontal_scroll_mode = 0
+
+[node name="BestTries" type="VBoxContainer" parent="Ui/StatsContainer/Stats/Scroll"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 0)
+layout_mode = 2
+
+[connection signal="try_initialized" from="LearnerController" to="." method="_on_learner_controller_try_initialized"]
+[connection signal="try_terminated" from="LearnerController" to="." method="_on_learner_controller_try_terminated"]
+[connection signal="score_set" from="Game" to="." method="_on_game_score_set"]
+[connection signal="value_changed" from="Ui/ActionsContainer/Actions/TimeScale/SpinBox" to="." method="_on_time_scale_spin_box_value_changed"]
+[connection signal="value_changed" from="Ui/ActionsContainer/Actions/Seed/SpinBox" to="." method="_on_spin_box_value_changed"]
+[connection signal="value_changed" from="Ui/ActionsContainer/Actions/TryPerGen/SpinBox" to="." method="_on_try_per_gen_spin_box_value_changed"]
+[connection signal="value_changed" from="Ui/ActionsContainer/Actions/BestTriesKept/SpinBox" to="." method="_on_best_tries_kept_spin_box_value_changed"]
+[connection signal="pressed" from="Ui/ActionsContainer/Actions/Start" to="." method="_on_start_pressed"]
+[connection signal="pressed" from="Ui/ActionsContainer/Actions/Reset" to="." method="_on_reset_pressed"]
+[connection signal="pressed" from="Ui/ActionsContainer/Actions/Quit" to="." method="_on_quit_pressed"]

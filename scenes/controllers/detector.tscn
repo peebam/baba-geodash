@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c16i367wvlchx"]
+
+[ext_resource type="Script" uid="uid://cria8bvuh61xa" path="res://scenes/controllers/detector.gd" id="1_p5geg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p5geg"]
+size = Vector2(16, 16)
+
+[node name="Detector" type="ShapeCast2D"]
+shape = SubResource("RectangleShape2D_p5geg")
+target_position = Vector2(0, 0)
+script = ExtResource("1_p5geg")

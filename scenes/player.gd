@@ -1,30 +1,30 @@
 class_name Player extends CharacterBody2D
 
-signal dead
+signal died
+signal won
 
 enum STATES {
+	IDLE,
 	RUN,
 	DEAD,
 	JUMP,
 }
 
-var _state = STATES.DEAD
-
 const SPEED := 10.376 * 16
 const JUMP := 260.0
 
+var _state = STATES.IDLE
 var _tween_rotate : Tween = null
 
 var action_jump_pressed := false
 
 func _physics_process(delta: float) -> void:
-	if _state == STATES.DEAD:
+	if _state == STATES.DEAD or _state == STATES.IDLE:
 		return
 
 	if is_on_floor():
 		$GPUParticles2D.emitting = true
 		_state = STATES.RUN
-
 		if action_jump_pressed:
 			_jump()
 
@@ -38,11 +38,26 @@ func _physics_process(delta: float) -> void:
 
 # Public
 
-func reset() -> void:
+func start() -> void:
+	reset()
 	_state = STATES.RUN
+
+
+func reset() -> void:
+	$AnimationPlayer.play("RESET")
+	_state = STATES.IDLE
 	velocity = Vector2.ZERO
 	$Sprite.rotation = 0
 	$Sprite.position = Vector2.ZERO
+
+
+func win() -> void:
+	_state = STATES.IDLE
+	velocity = Vector2.ZERO
+	move_and_slide()
+	$AnimationPlayer.play("win")
+	await $AnimationPlayer.animation_finished
+	won.emit()
 
 # Private
 
@@ -73,7 +88,7 @@ func _roll() -> void:
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "die":
-		dead.emit()
+		died.emit()
 
 
 func _on_pike_detector_body_entered(body: Node2D) -> void:

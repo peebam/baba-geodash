@@ -1,6 +1,15 @@
 extends Node
 
-@export var player : Player
+@export var game : Game
 
-func _physics_process(delta: float) -> void:
-	player.action_jump_pressed = Input.is_action_pressed("jump")
+var _player: Player
+
+
+func _ready() -> void:
+	_player = game.get_node("Player")
+	game.start()
+
+
+func _unhandled_input(event: InputEvent) -> void:
+	if event.is_action("jump"):
+		_player.action_jump_pressed = Input.is_action_pressed("jump")

@@ -11,14 +11,14 @@ config_version=5
 [application]
 
 config/name="Baba Geodash"
-run/main_scene="uid://cs7iaa2tt31x6"
+run/main_scene="uid://duy2oa3nuc8s8"
 config/features=PackedStringArray("4.4", "Forward Plus")
 config/icon="res://icon.svg"
 
 [display]
 
-window/size/viewport_width=800
-window/size/viewport_height=400
+window/size/viewport_width=1200
+window/size/viewport_height=800
 window/size/mode=2
 window/stretch/mode="viewport"
 window/stretch/aspect="keep_height"

@@ -1,14 +1,32 @@
-extends Node2D
+class_name Game extends Node2D
+
+signal score_set
 
 @onready var _start_point: Node2D = $TileMapLayer/Start
 
+var score := 0.0 : set = set_score
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_cancel"):
-		get_tree().quit()
+func _process(delta: float) -> void:
+	score = max($Player.position.x / 100.0, 0.0)
 
-func _ready() -> void:
-	_start()
+# Public
+
+func set_score(value: float):
+	score = round(value * 10) / 10.0
+	score_set.emit()
+
+
+func start() -> void:
+	$Player.start()
+	$Camera.position = Vector2.ZERO
+	$Player.position = _start_point.global_position
+	_play_animation_start()
+
+
+func reset() -> void:
+	$Player.reset()
+	$Camera.position = Vector2.ZERO
+	$Player.position = _start_point.global_position
 
 # Privates
 
@@ -17,17 +35,10 @@ func _play_animation_start():
 	await $ForegroundLayer/AnimationPlayer.animation_finished
 
 
-func _reset() -> void:
-	$Camera.position = Vector2.ZERO
-	$Player.position = _start_point.global_position
-
-
-func _start() -> void:
-	await _play_animation_start()
-	$Player.reset()
+func _win() -> void:
+	$Player.win()
 
 # Signals
 
-func _on_player_dead() -> void:
-	_reset()
-	_start()
+func _on_end_zone_body_entered(body: Node2D) -> void:
+	_win()

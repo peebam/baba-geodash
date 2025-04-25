@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://dwvcvol1q1frj"]
+
+[ext_resource type="PackedScene" uid="uid://cs7iaa2tt31x6" path="res://scenes/game.tscn" id="1_8uh7m"]
+[ext_resource type="PackedScene" uid="uid://c2uqb21kgbaqy" path="res://scenes/controllers/keyboard_controller.tscn" id="2_6uqi0"]
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Game" parent="." instance=ExtResource("1_8uh7m")]
+
+[node name="KeyboardController" parent="." node_paths=PackedStringArray("game") instance=ExtResource("2_6uqi0")]
+game = NodePath("../Game")
