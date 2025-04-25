@@ -15,6 +15,7 @@ const JUMP := 260.0
 
 var _tween_rotate : Tween = null
 
+var action_jump_pressed := false
 
 func _physics_process(delta: float) -> void:
 	if _state == STATES.DEAD:
@@ -24,7 +25,7 @@ func _physics_process(delta: float) -> void:
 		$GPUParticles2D.emitting = true
 		_state = STATES.RUN
 
-		if Input.is_action_pressed("jump"):
+		if action_jump_pressed:
 			_jump()
 
 		if velocity.x != SPEED:

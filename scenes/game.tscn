@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=4 uid="uid://cs7iaa2tt31x6"]
+[gd_scene load_steps=11 format=4 uid="uid://cs7iaa2tt31x6"]
 
 [ext_resource type="Script" uid="uid://dutnny0mlun54" path="res://scenes/game.gd" id="1_lbhrr"]
 [ext_resource type="TileSet" uid="uid://bt5xnjeskwdny" path="res://resources/tileset.tres" id="1_uwrxv"]
 [ext_resource type="PackedScene" uid="uid://c21bw3dk7qblh" path="res://scenes/player.tscn" id="4_iywne"]
 [ext_resource type="Script" uid="uid://ij2le2shc3l2" path="res://scenes/camera.gd" id="5_iywne"]
 [ext_resource type="Shader" uid="uid://8skbeo6dnxma" path="res://scenes/sky.gdshader" id="6_p57ef"]
+[ext_resource type="PackedScene" uid="uid://c2uqb21kgbaqy" path="res://scenes/controllers/keyboard_controller.tscn" id="6_u5sy4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gee14"]
 shader = ExtResource("6_p57ef")
@@ -102,7 +103,7 @@ position = Vector2(-27, 251)
 anchor_mode = 0
 drag_horizontal_enabled = true
 script = ExtResource("5_iywne")
-tracked = NodePath("")
+tracked = NodePath("../Player")
 x_limit = 100
 
 [node name="ForegroundLayer" type="CanvasLayer" parent="."]
@@ -130,4 +131,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_gee14")
 }
 
+[node name="KeyboardController" parent="." instance=ExtResource("6_u5sy4")]
+
+[connection signal="dead" from="Player" to="." method="_on_player_dead"]
 [connection signal="animation_finished" from="ForegroundLayer/AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
